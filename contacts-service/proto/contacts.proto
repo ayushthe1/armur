@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package contacts;
+
+option go_package = "contacts/proto";
+
+service ContactsService {
+  rpc AddContact (AddContactRequest) returns (AddContactResponse);
+}
+
+message AddContactRequest {
+  string name = 1;
+  string email = 2;
+  string phone = 3;
+}
+
+message AddContactResponse {
+  string message = 1;
+}
