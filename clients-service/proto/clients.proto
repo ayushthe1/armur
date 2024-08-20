@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package clients;
+
+option go_package = "clients/proto";
+
+service ClientsService {
+  rpc AddClient (AddClientRequest) returns (AddClientResponse);
+  rpc GetClients (GetClientsRequest) returns (GetClientsResponse);
+}
+
+message AddClientRequest {
+  string name = 1;
+  string email = 2;
+  string phone = 3;
+  string status = 4; // Final status, e.g., "payment done"
+}
+
+message AddClientResponse {
+  string message = 1;
+}
+
+message GetClientsRequest {}
+
+message GetClientsResponse {
+  repeated Client clients = 1;
+}
+
+message Client {
+  string name = 1;
+  string email = 2;
+  string phone = 3;
+  string status = 4;
+}
