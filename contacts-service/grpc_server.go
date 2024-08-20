@@ -42,7 +42,7 @@ func (s *server) UpdateContactStatus(ctx context.Context, req *proto.UpdateConta
 
 func (s *server) notifyLeadsService(contact *proto.AddContactRequest) error {
 	// Connect to Leads service
-	conn, err := grpc.Dial("localhost:50052", grpc.WithInsecure())
+	conn, err := grpc.Dial("leads-service:50052", grpc.WithInsecure())
 	if err != nil {
 		return err
 	}

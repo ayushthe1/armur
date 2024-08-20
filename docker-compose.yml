@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  contacts-service:
+    build: 
+      context: ./contacts-service
+      dockerfile: Dockerfile
+    ports:
+      - "50051:50051"
+    networks:
+      - crm-network
+
+  leads-service:
+    build: 
+      context: ./leads-service
+      dockerfile: Dockerfile
+    ports:
+      - "50052:50052"
+    networks:
+      - crm-network
+    depends_on:
+      - contacts-service
+
+  clients-service:
+    build: 
+      context: ./clients-service
+      dockerfile: Dockerfile
+    ports:
+      - "50053:50053"
+    networks:
+      - crm-network
+    depends_on:
+      - leads-service
+
+networks:
+  crm-network:
+    driver: bridge

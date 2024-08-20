@@ -42,13 +42,13 @@ func (s *server) UpdateLeadStatus(ctx context.Context, req *proto.UpdateLeadStat
 
 func (s *server) notifyClientsService(lead *proto.AddLeadRequest) error {
 	// Connect to Clients service
-	conn, err := grpc.Dial("localhost:50053", grpc.WithInsecure())
+	conn, err := grpc.Dial("clients-service:50053", grpc.WithInsecure())
 	if err != nil {
 		return err
 	}
 	defer conn.Close()
 
-	clientsClient := clients.NewClientsServiceClient(conn) // Use the correct import and method
+	clientsClient := clients.NewClientsServiceClient(conn)
 	_, err = clientsClient.AddClient(context.Background(), &clients.AddClientRequest{
 		Name:   lead.Name,
 		Email:  lead.Email,
