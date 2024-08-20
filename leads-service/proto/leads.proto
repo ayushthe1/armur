@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package leads;
+
+option go_package = "leads/proto";
+
+service LeadsService {
+  rpc AddLead (AddLeadRequest) returns (AddLeadResponse); // Adds a new lead with basic information and an initial status
+  rpc UpdateLeadStatus (UpdateLeadStatusRequest) returns (UpdateLeadStatusResponse); //  Updates the status of a lead based on their email
+}
+
+message AddLeadRequest {
+  string name = 1;
+  string email = 2;
+  string phone = 3;
+  string status = 4;
+}
+
+message AddLeadResponse {
+  string message = 1;
+}
+
+message UpdateLeadStatusRequest {
+  string email = 1;
+  string new_status = 2;
+}
+
+message UpdateLeadStatusResponse {
+  string message = 1;
+}
