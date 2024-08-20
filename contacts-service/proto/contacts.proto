@@ -6,14 +6,25 @@ option go_package = "contacts/proto";
 
 service ContactsService {
   rpc AddContact (AddContactRequest) returns (AddContactResponse);
+  rpc UpdateContactStatus (UpdateContactStatusRequest) returns (UpdateContactStatusResponse);
 }
 
 message AddContactRequest {
   string name = 1;
   string email = 2;
   string phone = 3;
+  string status = 4;
 }
 
 message AddContactResponse {
+  string message = 1;
+}
+
+message UpdateContactStatusRequest {
+  string email = 1;
+  string new_status = 2;
+}
+
+message UpdateContactStatusResponse {
   string message = 1;
 }

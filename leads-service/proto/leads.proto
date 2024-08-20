@@ -5,8 +5,8 @@ package leads;
 option go_package = "leads/proto";
 
 service LeadsService {
-  rpc AddLead (AddLeadRequest) returns (AddLeadResponse); // Adds a new lead with basic information and an initial status
-  rpc UpdateLeadStatus (UpdateLeadStatusRequest) returns (UpdateLeadStatusResponse); //  Updates the status of a lead based on their email
+  rpc AddLead (AddLeadRequest) returns (AddLeadResponse);
+  rpc UpdateLeadStatus (UpdateLeadStatusRequest) returns (UpdateLeadStatusResponse);
 }
 
 message AddLeadRequest {

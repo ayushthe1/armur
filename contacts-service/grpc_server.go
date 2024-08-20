@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"net"
 
 	"github.com/ayushthe1/armur/contacts-service/contacts/proto"
+	leads "github.com/ayushthe1/armur/leads-service/leads/proto"
 
 	"google.golang.org/grpc"
 )
@@ -17,25 +16,45 @@ type server struct {
 }
 
 func (s *server) AddContact(ctx context.Context, req *proto.AddContactRequest) (*proto.AddContactResponse, error) {
-	// For now, we'll just log the contact and add it to an in-memory list
 	log.Printf("Received contact: %v", req)
 	s.contacts = append(s.contacts, req)
-
-	log.Println("All contacts are : ", s.contacts)
 	return &proto.AddContactResponse{Message: "Contact added successfully"}, nil
 }
 
-func main() {
-	listener, err := net.Listen("tcp", ":50051")
+func (s *server) UpdateContactStatus(ctx context.Context, req *proto.UpdateContactStatusRequest) (*proto.UpdateContactStatusResponse, error) {
+	for _, contact := range s.contacts {
+		if contact.Email == req.Email {
+			contact.Status = req.NewStatus
+			log.Printf("Updated contact status: %v", contact)
+
+			// If status is "contacted", notify Leads service
+			if req.NewStatus == "contacted" {
+				err := s.notifyLeadsService(contact)
+				if err != nil {
+					return &proto.UpdateContactStatusResponse{Message: "Failed to update lead status"}, err
+				}
+			}
+			return &proto.UpdateContactStatusResponse{Message: "Contact status updated successfully"}, nil
+		}
+	}
+	return &proto.UpdateContactStatusResponse{Message: "Contact not found"}, nil
+}
+
+func (s *server) notifyLeadsService(contact *proto.AddContactRequest) error {
+	// Connect to Leads service
+	conn, err := grpc.Dial("localhost:50052", grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Failed to listen on port 50051: %v", err)
+		return err
 	}
+	defer conn.Close()
 
-	grpcServer := grpc.NewServer()
-	proto.RegisterContactsServiceServer(grpcServer, &server{})
+	leadsClient := leads.NewLeadsServiceClient(conn)
+	_, err = leadsClient.AddLead(context.Background(), &leads.AddLeadRequest{
+		Name:   contact.Name,
+		Email:  contact.Email,
+		Phone:  contact.Phone,
+		Status: "contacted",
+	})
 
-	fmt.Println("Contacts gRPC server is running on port 50051...")
-	if err := grpcServer.Serve(listener); err != nil {
-		log.Fatalf("Failed to serve gRPC server: %v", err)
-	}
+	return err
 }

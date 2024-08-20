@@ -1,3 +1,5 @@
+github.com/ayushthe1/armur/leads-service v0.0.0-20240820065856-15717f469c34 h1:A180SrbdO0EZUfLzCELxFHZyjMJq+yOoWsF8btJO0CI=
+github.com/ayushthe1/armur/leads-service v0.0.0-20240820065856-15717f469c34/go.mod h1:EFWctmzeI8Lb6vkZN99x2nrqunRPm/+abzhIZg6gvSk=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
 golang.org/x/net v0.25.0 h1:d/OCCoBEUq33pjydKrGQhw7IlUPI2Oylr+8qLx49kac=
